@@ -18,4 +18,4 @@ Also, those databases were used to compute the coordinate transformation between
 An algorithm was also created to generate the problem file HDLL for the task planner algorithm.
 (Algo occupancymap_planner)
 
-I (Maximilien Dreier), stay available for any question at maximilien.dreier@isae-supaero.fr
+I (Maximilien Dreier), stay available for any question at maximilienlp@gmail.com 

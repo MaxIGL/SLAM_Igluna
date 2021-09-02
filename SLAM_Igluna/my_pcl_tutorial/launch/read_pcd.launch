@@ -1,0 +1,59 @@
+<?xml version="1.0"?> 
+<launch>
+<remap from="reading_pcd_before/pcl_output" to="end_after" />
+<node name="reading_pcd_before" pkg="my_pcl_tutorial" type="read_pcd" >
+
+ <param name="input" type="string" value="/home/dcas/m.dreier/Bureau/okay.pcd" />
+
+
+ <param name="frame_id" type="string" value="map" />
+
+
+</node>
+<remap from="reading_pcd_radiused/pcl_output" to="end_minus" />
+
+<node name="reading_pcd_radiused" pkg="my_pcl_tutorial" type="read_pcd" >
+
+ <param name="input" type="string" value="/home/dcas/m.dreier/Bureau/3Dmap_100_outliers_denoised.pcd" />
+
+
+
+<param name="frame_id" type="string" value="map" />
+
+</node>
+<!--remap from="reading_pcd_denoise/pcl_output" to="half" />
+
+<node name="reading_pcd_denoise" pkg="my_pcl_tutorial" type="read_pcd" >
+
+ <param name="input" type="string" value="/home/dcas/m.dreier/Bureau/igluna/map_half.pcd" />
+
+
+
+<param name="frame_id" type="string" value="map" />
+
+</node>
+<remap from="reading_pcd_grid/pcl_output" to="grid" />
+
+<node name="reading_pcd_grid" pkg="my_pcl_tutorial" type="read_pcd" >
+
+ <param name="input" type="string" value="/home/dcas/m.dreier/Documents/PCD_FILES/Test2/Lidar/grid_map_laser_in.pcd" />
+
+
+
+<param name="frame_id" type="string" value="map" />
+
+</node>
+<remap from="reading_pcd_grids/pcl_output" to="gridscript" />
+
+<node name="reading_pcd_grids" pkg="my_pcl_tutorial" type="read_pcd" >
+
+ <param name="input" type="string" value="/home/dcas/m.dreier/Documents/PCD_FILES/Test2/Lidar/grid_map_lidar_in_script.pcd" />
+
+
+
+<param name="frame_id" type="string" value="map" />
+
+
+</node-->
+
+</launch>

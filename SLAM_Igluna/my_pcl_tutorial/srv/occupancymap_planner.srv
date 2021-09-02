@@ -1,0 +1,9 @@
+string file_in_map
+string file_in_artag
+string file_out
+float64 resolution_discretized
+float64 thr_occ
+float64 thr_unknown
+int64 how_many_layers_removed
+int64 how_many_max_intermediary_waypoints
+---

@@ -1,0 +1,11 @@
+<?xml version="1.0"?> 
+<launch>
+
+	<node name="ar_tf_linker" pkg="my_pcl_tutorial" type="ar_tf_pcl" output="screen">
+<!-- In Which Order do we put the databases ? The program will give you the transformation from 1 to 2. So you want database 1 to be your child frame and 2 to be your parent frame-->
+<param name="database1" value ="/home/dcas/m.dreier/Bureau/rover.txt"/>
+<param name="database2" value ="/home/dcas/m.dreier/Bureau/drone.txt"/>
+<param name="parent_frame" value="map"/>
+<param name="child_frame" value="T265"/>
+</node>
+</launch>

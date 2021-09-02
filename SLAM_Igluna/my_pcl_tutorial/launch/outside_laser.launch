@@ -1,0 +1,82 @@
+<?xml version="1.0"?> 
+<launch>
+
+<!-- tf static tranform -->
+
+<param name="use_sim_time"  value="true"/>
+     <node pkg="tf" type="static_transform_publisher" name="depth_camera" args="0 0.052 0.013 0 0 0 1 T265_pose_frame laser 100"/>
+<node pkg="tf" type="static_transform_publisher" name="tracking_camera" args="0 0 0 0 0 0 1 map T265_odom_frame 100"/>
+
+<!-- LASER filter -->
+<!-- Output topic : scan_filtered -->
+<node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+      <remap from="scan" to="scan" />
+      <rosparam command="load" file="$(find laser_filters)/src/scan_filter.yaml" />
+</node>
+
+
+<!-- stacking several laser scan into a point cloud -->
+<!-- Output topic : scan_assembled -->
+	<node type="laser_scan_assembler" pkg="laser_assembler"
+        name="my_assembler">
+    <remap from="scan" to="scan_filtered"/>
+    <param name="max_scans" type="int" value="200" />
+    <param name="fixed_frame" type="string" value="map" />
+  </node>
+<node pkg="laser_assembler" type="laser_stacker.py" name="laser_stacker" />
+
+
+
+  <!-- Run a VoxelGrid and Statistical Outlier filters to clean NaNs and downsample the data -->
+<!-- Output Topic : statistical_outlier_removal/output -->
+<node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+  <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
+    <remap from="~input" to="scan_assembled" />
+    <rosparam>
+      filter_field_name: z
+      filter_limit_min: -10
+      filter_limit_max: 10
+      filter_limit_negative: False
+      leaf_size: 0.03
+    </rosparam>
+  </node>
+
+  <node name="statistical_outlier_removal"
+        pkg="nodelet" type="nodelet"
+        args="standalone pcl/StatisticalOutlierRemoval">
+    <remap from="~input" to="voxel_grid/output" />
+    <rosparam>
+      mean_k: 10
+      stddev: 1.0
+    </rosparam>
+  </node >
+
+
+
+<!-- Octomap 3D mapping -->
+     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.03" />
+		
+		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+		<param name="frame_id" type="string" value="map" />
+		
+		<!-- maximum range to integrate (speedup!) -->
+		<param name="sensor_model/max_range" value="25.0" />
+		
+		<!-- data source to integrate (PointCloud2) -->
+		<remap from="cloud_in" to="statistical_outlier_removal/output" />
+
+		<!-- 2D projected map parameters -->
+		<param name="base_frame_id" value="map" />
+		<param name="filter_ground" value="false" />
+		<param name="ground_filter/distance" value="0.04" />
+		<param name="ground_filter/angle" value="0.05" />
+		<param name="ground_filter/plane_distance" value="0.07" />
+
+		<param name="occupancy_min_z" value="-10" />
+		<param name="occupancy_max_z" value="10" />
+
+	</node>
+
+
+</launch>

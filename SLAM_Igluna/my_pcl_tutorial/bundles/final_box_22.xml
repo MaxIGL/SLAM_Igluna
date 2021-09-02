@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><multimarker markers="5">
+	<marker index="22" status="1">
+		<corner x="-10" y="-10" z="0"/>
+		<corner x="10" y="-10" z="0"/>
+		<corner x="10" y="10" z="0"/>
+		<corner x="-10" y="10" z="0"/>
+	</marker>
+	<marker index="108" status="1">
+		<corner x="-10" y="-18" z="-19"/>
+		<corner x="10" y="-18" z="-19"/>
+		<corner x="10" y="-18" z="-9"/>
+		<corner x="-10" y="-18" z="-9"/>
+	</marker>
+	<marker index="109" status="1">
+		<corner x="14" y="-10" z="-19"/>
+		<corner x="14" y="10" z="-19"/>
+		<corner x="14" y="10" z="-9"/>
+		<corner x="14" y="-10" z="-9"/>
+	</marker>
+	<marker index="110" status="1">
+		<corner x="10" y="18" z="-19"/>
+		<corner x="-10" y="18" z="-19"/>
+		<corner x="-10" y="18" z="-9"/>
+		<corner x="10" y="18" z="-9"/>
+	</marker>
+	<marker index="111" status="1">
+		<corner x="-14" y="10" z="-19"/>
+		<corner x="-14" y="-10" z="-19"/>
+		<corner x="-14" y="-10" z="-9"/>
+		<corner x="-14" y="10" z="-9"/>
+	</marker>
+</multimarker>
+

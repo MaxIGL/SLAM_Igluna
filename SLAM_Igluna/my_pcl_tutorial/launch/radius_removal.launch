@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+<node name="radius_outlier_removal"
+        pkg="nodelet" type="nodelet"
+        args="standalone pcl/RadiusOutlierRemoval">
+    <remap from="~input" to="/D435/depth/color/points" />
+    <rosparam>
+      min_neigbors: 4
+      radius_search: 0.045
+    </rosparam>
+  </node >
+
+
+</launch>

@@ -1,0 +1,6 @@
+string file_in
+string file_out
+float64 radius_search
+int64 min_neighbors_in_radius
+---
+string comment

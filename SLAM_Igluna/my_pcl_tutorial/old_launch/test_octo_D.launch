@@ -1,0 +1,39 @@
+<?xml version="1.0"?> 
+<launch>
+
+<!-- tf static tranform -->
+
+     <param name="use_sim_time"  value="true"/>
+     <node pkg="tf" type="static_transform_publisher" name="depth_camera" args="0 0 0  0.016 0.707 0.016 0.707 test_igluna D435_link 100"/>
+
+<!-- reducing frequency -->
+
+<node name = "input_topic_throttler" type="drop" pkg="topic_tools" args= "/D435/depth/color/points 19 20 /D435/depth/color/points/throttled" />
+
+
+
+<!-- Octomap 3D mapping -->
+     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.03" />
+		
+		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+		<param name="frame_id" type="string" value="world" />
+		
+		<!-- maximum range to integrate (speedup!) -->
+		<param name="sensor_model/max_range" value="8.0" />
+		
+		<!-- data source to integrate (PointCloud2) -->
+		<remap from="cloud_in" to="/D435/depth/color/points/throttled" />
+		
+		<param name="base_frame_id" value="world" />
+		<param name="filter_ground" value="true" />
+		<param name="ground_filter/distance" value="0.1" />
+		<param name="ground_filter/angle" value="0.05" />
+		<param name="ground_filter/plane_distance" value="0.14" />
+
+
+<param name="occupancy_min_z" value="-10" />
+<param name="occupancy_max_z" value="10" />
+	</node>
+
+</launch>

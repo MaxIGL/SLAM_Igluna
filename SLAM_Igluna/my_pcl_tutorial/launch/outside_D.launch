@@ -1,0 +1,70 @@
+<?xml version="1.0"?> 
+<launch>
+
+<!-- tf static tranform -->
+
+     <param name="use_sim_time"  value="true"/>
+     <node pkg="tf" type="static_transform_publisher" name="depth_camera" args="0 0.052 0.013 0 0 0 1 T265_pose_frame D435_link 100"/>
+<node pkg="tf" type="static_transform_publisher" name="tracking_camera" args="0 0 0 0 0 0 1 map T265_odom_frame 100"/>
+
+<!-- reducing frequency -->
+
+<node name = "input_topic_throttler" type="drop" pkg="topic_tools" args= "/D435/depth/color/points 0 20 /D435/depth/color/points/throttled" />
+
+<!-- Run a VoxelGrid and Statistical Outlier filters to clean NaNs and downsample the data -->
+<!-- Output Topic : statistical_outlier_removal/output -->
+<node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+  <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
+    <remap from="~input" to="/D435/depth/color/points/throttled" />
+    <rosparam>
+      filter_field_name: z
+      filter_limit_min: -5
+      filter_limit_max: 5
+      filter_limit_negative: False
+      leaf_size: 0.03
+    </rosparam>
+  </node>
+
+<node name="radius_outlier_removal"
+        pkg="nodelet" type="nodelet"
+        args="standalone pcl/RadiusOutlierRemoval">
+    <remap from="~input" to="voxel_grid/output" />
+    <rosparam>
+      min_neigbors: 5
+      radius_search: 0.06
+    </rosparam>
+  </node >
+
+  <node name="statistical_outlier_removal"
+        pkg="nodelet" type="nodelet"
+        args="standalone pcl/StatisticalOutlierRemoval">
+    <remap from="~input" to="radius_outlier_removal/output" />
+    <rosparam>
+      mean_k: 20
+      stddev: 1.0
+    </rosparam>
+  </node>
+
+
+<!-- Octomap 3D mapping -->
+     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.03" />
+		
+		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+		<param name="frame_id" type="string" value="map" />
+		
+		<!-- maximum range to integrate (speedup!) -->
+		<param name="sensor_model/max_range" value="3.5" />
+		
+		<!-- data source to integrate (PointCloud2) -->
+		<remap from="cloud_in" to="statistical_outlier_removal/output" />
+
+
+<param name="occupancy_min_z" value="-3" />
+<param name="occupancy_max_z" value="5" />
+	</node>
+
+
+
+</launch>
+

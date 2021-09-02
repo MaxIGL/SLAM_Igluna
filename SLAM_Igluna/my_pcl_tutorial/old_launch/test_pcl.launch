@@ -1,0 +1,16 @@
+<?xml version="1.0"?> 
+<launch>
+
+<node name="downsampling" pkg="my_pcl_tutorial" type="example_pcl" >
+
+ <remap from="input" to="/D435/depth/color/points" />
+</node>
+
+<!--node name="filtering" pkg="my_pcl_tutorial" type="filtertest2_pcl" >
+
+ <remap from="input" to="/D435/depth/color/points" />
+</node -->
+
+
+
+</launch>

@@ -18,8 +18,8 @@ Also, those databases were used to compute the coordinate transformation between
 An algorithm was also created to generate the problem file HDLL for the task planner algorithm.
 (Algo occupancymap_planner)
 
-You'll find in this repository the Student documentation presenting my full work and its results (including the Final testing week at Esperce in late June 2021) as well as my
-Master Thesis concerning this internship presenting my work and the theory behind the implemented algorithm (this thesis was due for End of April 2021 and mentions the work up to that date).
+You'll find in this repository the Student documentation presenting my full work (as well as the work of the team) and its results (including the Final testing week at Esperce in late June 2021). You'll find here as well my
+Master Thesis concerning this internship presenting my work and the theory behind the implemented algorithms (this thesis was due for End of April 2021 and mentions the work up to that date).
 
 The ending video presenting our team work and the tests at Esperce is available here :
 https://drive.google.com/file/d/1jlD5jmhru6JPV-2YkScTGlvmlNnWypEy/view
